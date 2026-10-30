@@ -1,0 +1,5 @@
+.DS_Store
+tools/sim/.build/
+tools/sim/.solana-os/
+__pycache__/
+*.zip

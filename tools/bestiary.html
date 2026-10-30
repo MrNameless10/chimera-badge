@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CHIMERA Bestiary</title>
+<meta name="description" content="Every creature the CHIMERA badge game can hatch, drawn from the badge's own sprite atlas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Pixelify+Sans:wght@500;700&display=swap">
+<style>
+body { margin: 0; }
+[hidden] { display: none !important; }
+:root {
+  --bg: #EDEFEA;
+  --panel: #FBFCF9;
+  --ink: #1A1E23;
+  --muted: #5B6470;
+  --line: #CDD3CB;
+  --accent: #7B3FE4;
+  --accent-ink: #FFFFFF;
+  --screen: #0B0D12;
+  --screen-ink: #9AA3B2;
+  --screen-line: #1D222C;
+  --font-display: "Pixelify Sans", "Courier New", monospace;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111419; --panel: #181C23; --ink: #E5E8EC; --muted: #8E98A5; --line: #2A303A;
+    --accent: #B48CFF; --accent-ink: #14101F; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111419; --panel: #181C23; --ink: #E5E8EC; --muted: #8E98A5; --line: #2A303A;
+  --accent: #B48CFF; --accent-ink: #14101F; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 24px; }
+header { display: grid; gap: 10px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 5vw, 44px); line-height: 1.05; margin: 0; letter-spacing: 0.5px; text-wrap: balance; }
+.lede { margin: 0; max-width: 66ch; color: var(--muted); }
+.counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px 20px; padding-top: 6px; }
+.count { display: grid; gap: 2px; border-top: 2px solid var(--line); padding-top: 8px; }
+.count b { font-family: var(--font-mono); font-size: 20px; font-variant-numeric: tabular-nums; font-weight: 600; }
+.count span { color: var(--muted); font-size: 13px; }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
+@media (max-width: 900px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.catalogue { display: grid; gap: 16px; min-width: 0; }
+.controls { display: grid; gap: 12px; }
+.ctl { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; align-items: center; }
+@media (max-width: 520px) { .ctl { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+.ctl-label { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); }
+.ctl-label small { display: block; letter-spacing: 0; text-transform: none; font-family: var(--font-mono); font-size: 11px; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip {
+  font: 600 12px var(--font-mono); min-width: 28px; height: 28px; padding: 0 8px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer;
+}
+.chip.swatch { width: 28px; min-width: 28px; padding: 0; border-radius: 50%; border: 2px solid transparent; outline: 1px solid var(--line); }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.chip.swatch[aria-pressed="true"] { border-color: var(--panel); outline: 2px solid var(--ink); }
+.chip:focus-visible, .btn:focus-visible, input:focus-visible, canvas:focus-visible, label:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.caption { font-size: 13px; color: var(--muted); }
+.caption code { font-family: var(--font-mono); color: var(--ink); }
+.pager { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.pager .where { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn { font: 600 13px var(--font-body); height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+.btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.screen { background: var(--screen); border-radius: 14px; padding: 12px; border: 1px solid var(--screen-line); display: grid; gap: 6px; }
+.axis { color: var(--screen-ink); font: 11px var(--font-mono); display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); text-align: center; overflow: hidden; }
+.axis span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 6px; align-items: stretch; }
+.rows { display: grid; grid-template-rows: repeat(8, minmax(0, 1fr)); color: var(--screen-ink); font: 11px var(--font-mono); align-items: center; text-align: right; }
+#grid { display: block; width: 100%; aspect-ratio: 1 / 1; max-width: 100%; cursor: pointer; image-rendering: pixelated; }
+.search { display: flex; gap: 6px; flex-wrap: wrap; }
+.search input { flex: 1 1 180px; min-width: 0; height: 32px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: 14px var(--font-mono); text-transform: uppercase; }
+.msg { min-height: 20px; font-size: 13px; color: var(--muted); }
+.card { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 14px; }
+@media (max-width: 900px) { .card { position: static; } }
+.specimen { background: var(--screen); border-radius: 10px; padding: 14px; display: grid; justify-items: center; gap: 12px; }
+#big { width: 144px; height: 156px; image-rendering: pixelated; }
+.stages { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; width: 100%; }
+.stage { display: grid; justify-items: center; gap: 2px; color: var(--screen-ink); font: 11px var(--font-mono); text-align: center; }
+.stage canvas { width: 48px; height: 52px; image-rendering: pixelated; border-radius: 6px; }
+.stage.on { color: #F2F2F2; }
+.stage.on canvas { box-shadow: 0 0 0 1px #4A5160; }
+.leds { display: grid; grid-template-columns: repeat(6, 14px) 18px 14px; grid-template-rows: 14px 14px; gap: 8px; align-items: center; }
+.led { width: 14px; height: 14px; border-radius: 50%; background: #000; box-shadow: 0 0 0 1px #262b35; }
+.led.side { grid-column: 8; }
+.led.s1 { grid-row: 1; } .led.s2 { grid-row: 2; }
+.moods { display: flex; flex-wrap: wrap; gap: 6px 12px; justify-content: center; color: var(--screen-ink); font-size: 12px; }
+.moods label { display: inline-flex; gap: 5px; align-items: center; cursor: pointer; border-radius: 4px; }
+.name { font-family: var(--font-display); font-size: 30px; font-weight: 700; line-height: 1; margin: 0; letter-spacing: 1px; }
+.kind { margin: -8px 0 0; color: var(--muted); font-size: 14px; }
+.genome { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+.gene { display: grid; text-align: center; border: 1px solid var(--line); border-radius: 6px; padding: 4px 0; }
+.gene b { font: 600 15px var(--font-mono); }
+.gene span { font-size: 10px; letter-spacing: 0.8px; color: var(--muted); }
+.gene.free { border-style: dashed; color: var(--muted); }
+dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; font-size: 14px; }
+dt { color: var(--muted); }
+dd { margin: 0; min-width: 0; }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font: 600 12px var(--font-mono); padding: 4px 8px; border-radius: 4px; z-index: 5; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>CHIMERA Bestiary</h1>
+    <p class="lede">Every creature CHIMERA can hatch, drawn from the same sprite atlas the badge reads. Each page fixes the stage, colours, pulse and light pattern; the grid shows all 64 head and body combinations. Growing never changes the name: the creature grows, its identity stays. <a href="https://github.com/MrNameless10/chimera-badge">Source and how to play</a>.</p>
+    <div class="counts">
+      <div class="count"><b>64</b><span>bodies: 8 heads × 8 forms</span></div>
+      <div class="count"><b>192</b><span>sprites: each body as Cub, Young and Adult</span></div>
+      <div class="count"><b>49 152</b><span>looks: sprite × 16 colours × 16 accents</span></div>
+      <div class="count"><b>16 777 216</b><span>creatures with a unique name (genes 1 to 6)</span></div>
+    </div>
+  </header>
+
+  <div class="main">
+    <section class="catalogue" aria-label="Catalogue">
+      <div class="controls">
+        <div class="ctl"><div class="ctl-label">Stage<small>XP</small></div><div><div class="chips" id="c-stage"></div><div class="caption" id="cap-stage"></div></div></div>
+        <div class="ctl"><div class="ctl-label">Colour<small>gene 1 · HUE</small></div><div class="chips" id="c-hue"></div></div>
+        <div class="ctl"><div class="ctl-label">Accent<small>gene 2 · ACC</small></div><div class="chips" id="c-acc"></div></div>
+        <div class="ctl"><div class="ctl-label">Pulse<small>gene 3 · PLS</small></div><div><div class="chips" id="c-pls"></div><div class="caption" id="cap-pls"></div></div></div>
+        <div class="ctl"><div class="ctl-label">Pattern<small>gene 4 · PAT</small></div><div><div class="chips" id="c-pat"></div><div class="caption" id="cap-pat"></div></div></div>
+        <div class="ctl"><div class="ctl-label">Variant<small>genes 5·6, high bit</small></div><div><div class="chips" id="c-var"></div><div class="caption">Same look, different name.</div></div></div>
+      </div>
+      <div class="pager">
+        <span class="where" id="where"></span>
+        <div class="btns">
+          <button class="btn" id="prev" type="button">← Previous</button>
+          <button class="btn" id="next" type="button">Next →</button>
+          <button class="btn primary" id="rand" type="button">Random</button>
+        </div>
+      </div>
+      <div class="screen">
+        <div class="board">
+          <span></span>
+          <div class="axis" id="cols"></div>
+          <div class="rows" id="rows"></div>
+          <canvas id="grid" tabindex="0" aria-label="Grid of 64 creatures: rows are heads, columns are bodies; arrow keys move"></canvas>
+        </div>
+      </div>
+      <form class="search" id="search">
+        <input id="q" placeholder="Name (SKYE-R7HR) or genome (A3020690A)" autocomplete="off" spellcheck="false" aria-label="Search by name or genome">
+        <button class="btn primary" type="submit">Search</button>
+      </form>
+      <div class="msg" id="msg" role="status"></div>
+    </section>
+
+    <aside class="card" aria-label="Selected creature">
+      <div class="specimen">
+        <canvas id="big" width="144" height="156"></canvas>
+        <div class="stages" id="stages"></div>
+        <div class="leds" id="leds" aria-label="The badge's 8 LEDs showing this creature's light"></div>
+        <div class="moods">
+          <label><input type="checkbox" id="m-cheer"> Just won</label>
+          <label><input type="checkbox" id="m-lonely"> Alone for 2 h</label>
+          <label><input type="checkbox" id="m-near"> Badge nearby</label>
+        </div>
+      </div>
+      <p class="name" id="name"></p>
+      <p class="kind" id="kind"></p>
+      <div class="genome" id="genome"></div>
+      <dl id="facts"></dl>
+      <p class="note">Genes 7 to 9 (attack, defence, mutation) only change battle numbers, never the look or the name.</p>
+    </aside>
+  </div>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const ATLAS = Uint8Array.from(atob("__ATLAS__"), c => c.charCodeAt(0));
+const HEX = "0123456789ABCDEF";
+const B32 = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+const PREFIX = ["EMBR","BLAZ","FAWN","ZEST","SOLA","LIMA","MOSS","JADE","TIDE","MIST","SKYE","AZUL","NOVA","LILA","VEXA","ROSA"];
+const COLOURS = ["Red","Ember","Orange","Amber","Yellow","Lime","Green","Jade","Teal","Cyan","Sky","Blue","Indigo","Violet","Magenta","Pink"];
+const FAMILIES = ["cat","bunny","owl","frog","dragon","slime","beetle","bear"];
+const FORMS = ["Round","Winged","Tailed","Finned","Shelled","Leggy","Ghostly","Robotic"];
+const STAGES = [["Cub", "0–9 XP", "head and feet"], ["Young", "10–29 XP", "body without accents"], ["Adult", "30+ XP", "full body"]];
+const PATTERNS = ["breathe","chase","sparkle","flicker"];
+const ABILITIES = ["REGEN","PIERCE","SURGE","DRAIN"];
+const RULES = [
+  "heals 3 + MUT/2 and deals MUT/4",
+  "deals (ATK + MUT)/2 + 0 to 3",
+  "deals MUT/2 + 1 + 0 to MUT+1",
+  "deals 1 + MUT/2 and heals half + 1"
+];
+const M = 1 << 20, MUL = 0x9E3B5, ADD = 0x5A5A5;
+const INV = (() => { let v = MUL; for (let i = 0; i < 4; i++) v = (v * ((2 - (v * MUL) % M + M) % M)) % M; return v; })();
+const GW = 12, GH = 13;
+
+function rgb(h) {
+  const x = h * 96, s = x >> 8, up = x & 255, down = 255 - up;
+  switch (s) { case 0: return [255, up, 0]; case 1: return [down, 255, 0]; case 2: return [0, 255, up];
+    case 3: return [0, down, 255]; case 4: return [up, 0, 255]; }
+  return [255, 0, down];
+}
+const css = c => `rgb(${c[0]},${c[1]},${c[2]})`;
+
+function palette(hue, acc) {
+  const b = rgb(hue);
+  const a = acc === hue ? b.map(v => v * 5 >> 3) : rgb(acc);
+  return [null, css(b), css(b.map(v => (v + 255) >> 1)), css(a), "#F2F2F2", "#101010"];
+}
+
+function drawSprite(ctx, g, stage, combat, x, y, u) {
+  const pal = palette(g[0], g[1]);
+  const id = ((stage * 2 + (combat ? 1 : 0)) * 8 + (g[4] & 7)) * 8 + (g[5] & 7);
+  const off = ATLAS[id * 2] << 8 | ATLAS[id * 2 + 1];
+  const n = ATLAS[off];
+  for (let i = off + 1; i < off + 1 + n * 3; i += 3) {
+    const p = ATLAS[i], s = ATLAS[i + 1];
+    ctx.fillStyle = pal[ATLAS[i + 2]];
+    ctx.fillRect(x + (p >> 4) * u, y + (p & 15) * u, ((s >> 4) + 1) * u, ((s & 15) + 1) * u);
+  }
+  return n;
+}
+
+function nameOf(g) {
+  let x = 0;
+  for (let i = 1; i < 6; i++) x = (x << 4) | g[i];
+  const y = (Math.imul(x, MUL) + ADD) & 0xFFFFF;
+  return PREFIX[g[0]] + "-" + B32[y >> 15] + B32[(y >> 10) & 31] + B32[(y >> 5) & 31] + B32[y & 31];
+}
+
+function kindOf(g, stage) {
+  const family = FAMILIES[g[4] & 7];
+  return stage === 0 ? family[0].toUpperCase() + family.slice(1) + " cub" : FORMS[g[5] & 7] + " " + family;
+}
+
+function genesOfName(text) {
+  const m = /^([A-Z]{4})-?([0-9A-Z]{4})$/.exec(text);
+  if (!m) return null;
+  const hue = PREFIX.indexOf(m[1]);
+  if (hue < 0) return null;
+  let y = 0;
+  for (const ch of m[2].replace(/O/g, "0").replace(/[IL]/g, "1")) {
+    const d = B32.indexOf(ch);
+    if (d < 0) return null;
+    y = y * 32 + d;
+  }
+  const x = (((y - ADD) % M + M) % M) * INV % M;
+  return [hue, (x >> 16) & 15, (x >> 12) & 15, (x >> 8) & 15, (x >> 4) & 15, x & 15];
+}
+
+function ledFrame(g, t, fast, glow, near, blink) {
+  const pat = g[3] & 3, base = 3000 - g[2] * 160, period = fast ? base >> 1 : base, ph = t % period;
+  const body = rgb(g[0]), acc = rgb(g[1]), out = [];
+  const put = (c, k) => { k *= glow; return [c[0] * k >> 16, c[1] * k >> 16, c[2] * k >> 16]; };
+  if (pat === 0) {
+    const k = 16 + Math.floor((2 * ph < period ? ph : period - ph) * 480 / period);
+    for (let i = 0; i < 6; i++) out.push(put(body, k));
+    out.push(put(acc, k), put(acc, k));
+  } else if (pat === 1) {
+    const head = Math.floor(ph * 6 / period) + 1, tail = head === 1 ? 6 : head - 1;
+    for (let i = 1; i <= 6; i++) out.push(put(body, i === head ? 256 : i === tail ? 64 : 8));
+    const k = (head & 1) === 0 ? 154 : 38;
+    out.push(put(acc, k), put(acc, 192 - k));
+  } else if (pat === 2) {
+    const slot = Math.floor(t / Math.floor(period / 6));
+    for (let i = 1; i <= 8; i++) out.push((slot * 7 + i * 13) * 75 % 97 < 28 ? put(acc, 256) : put(body, 31));
+  } else {
+    const a = 2 * ph < period;
+    for (let i = 1; i <= 8; i++) out.push(((i <= 3 || i === 7) === a) ? put(body, 230) : put(acc, 230));
+  }
+  if (near) {
+    const on = (Math.floor(t / blink) & 1) === 0;
+    out[6] = on ? near : [0, 0, 0];
+    out[7] = on ? [0, 0, 0] : near;
+  }
+  return out;
+}
+
+const state = { stage: 2, hue: 10, acc: 2, pls: 4, pat: 15, var: 0, head: 3, body: 1 };
+const $ = id => document.getElementById(id);
+const grid = $("grid"), big = $("big"), tip = $("tip");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function genes(h = state.head, b = state.body) {
+  return [state.hue, state.acc, state.pls, state.pat, h | (state.var & 1) << 3, b | (state.var >> 1) << 3];
+}
+function pageIndex() { return ((((state.hue * 16 + state.acc) * 16 + state.pls) * 16 + state.pat) * 4 + state.var) * 3 + state.stage; }
+const PAGES = 65536 * 4 * 3;
+function setPage(p) {
+  p = ((p % PAGES) + PAGES) % PAGES;
+  state.stage = p % 3; p = Math.floor(p / 3);
+  state.var = p & 3; p >>= 2;
+  state.pat = p & 15; state.pls = (p >> 4) & 15; state.acc = (p >> 8) & 15; state.hue = (p >> 12) & 15;
+}
+
+function chips(id, key, count, label, swatch, text) {
+  const box = $(id);
+  for (let v = 0; v < count; v++) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip" + (swatch ? " swatch" : ""); b.dataset.v = v;
+    if (swatch) { b.style.background = css(rgb(v)); b.setAttribute("aria-label", COLOURS[v]); b.title = COLOURS[v]; }
+    else b.textContent = text ? text(v) : HEX[v];
+    if (label) b.title = label(v);
+    b.addEventListener("click", () => { state[key] = v; render(); });
+    box.appendChild(b);
+  }
+}
+chips("c-stage", "stage", 3, v => STAGES[v][1], false, v => STAGES[v][0]);
+chips("c-hue", "hue", 16, null, true);
+chips("c-acc", "acc", 16, null, true);
+chips("c-pls", "pls", 16, v => `${(3000 - v * 160) / 1000} s`);
+chips("c-pat", "pat", 16, v => `${PATTERNS[v & 3]} = ${ABILITIES[v & 3]}`);
+chips("c-var", "var", 4, null, false, v => ["0·0", "8·0", "0·8", "8·8"][v]);
+
+$("cols").innerHTML = FORMS.map(f => `<span title="${f}">${f}</span>`).join("");
+$("rows").innerHTML = FAMILIES.map(f => `<span>${f}</span>`).join("");
+
+const stageBox = $("stages"), stageCanvases = [];
+for (const [i, label] of [["0", "Cub"], ["1", "Young"], ["2", "Adult"], ["c", "Battle"]]) {
+  const d = document.createElement("button");
+  d.type = "button";
+  d.className = "stage chip";
+  d.style.cssText = "background:none;border:0;height:auto;padding:0;color:inherit";
+  d.innerHTML = `<canvas width="48" height="52"></canvas><span>${label}</span>`;
+  if (i !== "c") d.addEventListener("click", () => { state.stage = +i; render(); });
+  else d.title = "How it looks on the battle screen (fewer rectangles)";
+  stageCanvases.push(d.firstElementChild);
+  stageBox.appendChild(d);
+}
+
+for (let i = 0; i < 8; i++) {
+  const d = document.createElement("div");
+  d.className = "led" + (i === 6 ? " side s1" : i === 7 ? " side s2" : "");
+  $("leds").appendChild(d);
+}
+const leds = [...$("leds").children];
+for (const id of ["m-cheer", "m-lonely", "m-near"]) $(id).addEventListener("change", () => describe());
+
+let cell = 0;
+function drawGrid() {
+  const dpr = window.devicePixelRatio || 1;
+  const w = Math.round(grid.clientWidth * dpr);
+  if (grid.width !== w) { grid.width = w; grid.height = w; }
+  const ctx = grid.getContext("2d");
+  ctx.fillStyle = "#0B0D12"; ctx.fillRect(0, 0, w, w);
+  cell = w / 8;
+  const u = Math.max(1, Math.floor(cell * 0.84 / GH));
+  for (let h = 0; h < 8; h++) for (let b = 0; b < 8; b++) {
+    drawSprite(ctx, genes(h, b), state.stage, false, Math.round(b * cell + (cell - GW * u) / 2), Math.round(h * cell + (cell - GH * u) / 2), u);
+  }
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#B48CFF";
+  ctx.lineWidth = Math.max(2, Math.round(dpr * 2));
+  ctx.strokeRect(state.body * cell + ctx.lineWidth / 2, state.head * cell + ctx.lineWidth / 2, cell - ctx.lineWidth, cell - ctx.lineWidth);
+}
+
+let rects = 0;
+function drawBig(bob) {
+  const ctx = big.getContext("2d");
+  ctx.fillStyle = "#0B0D12"; ctx.fillRect(0, 0, big.width, big.height);
+  rects = drawSprite(ctx, genes(), state.stage, false, 12, 13 + bob, 10);
+}
+
+function drawStages() {
+  stageCanvases.forEach((c, i) => {
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "#151922"; ctx.fillRect(0, 0, c.width, c.height);
+    drawSprite(ctx, genes(), i === 3 ? state.stage : i, i === 3, 0, 0, 4);
+    c.parentElement.classList.toggle("on", i === state.stage);
+    if (i < 3) c.parentElement.setAttribute("aria-pressed", String(i === state.stage));
+  });
+}
+
+function mood() {
+  const g = genes();
+  return [$("m-cheer").checked, $("m-lonely").checked ? 96 : 256, $("m-near").checked ? rgb((g[0] + 7) & 15) : null, 405];
+}
+
+function describe() {
+  const g = genes(), p = g[3] & 3, [fast, glow, near] = mood();
+  const cycle = ((fast ? (3000 - g[2] * 160) >> 1 : 3000 - g[2] * 160) / 1000).toFixed(2);
+  const extras = [fast && "twice as fast (10 min after a win, a splice or an evolution)", glow < 256 && "glow at 38% (nobody nearby for over 1 h)", near && "LEDs 7 and 8 as radar: the neighbour's colour, blinking faster as it gets closer"].filter(Boolean);
+  $("facts").innerHTML = [
+    ["Family", `${PREFIX[g[0]]}, from the colour`],
+    ["Colours", `${COLOURS[g[0]]} / ${COLOURS[g[1]]}${g[0] === g[1] ? " (darkened accent)" : ""}`],
+    ["Stage", `${STAGES[state.stage][0]}, ${STAGES[state.stage][1]}: ${STAGES[state.stage][2]}`],
+    ["Light", `${PATTERNS[p]}, ${cycle} s cycle${extras.length ? "; " + extras.join("; ") : ""}`],
+    ["Ability", `${ABILITIES[p]}: ${RULES[p]}`],
+    ["Sprite", `${rects} rectangles on the badge screen`],
+    ["Genome", `<code style="font-family:var(--font-mono)">${g.map(v => HEX[v]).join("")}···</code>`]
+  ].map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+}
+
+function render() {
+  for (const [id, key] of [["c-stage","stage"],["c-hue","hue"],["c-acc","acc"],["c-pls","pls"],["c-pat","pat"],["c-var","var"]])
+    for (const b of $(id).children) b.setAttribute("aria-pressed", String(+b.dataset.v === state[key]));
+  $("cap-stage").textContent = `${STAGES[state.stage][1]}: ${STAGES[state.stage][2]}. A splice keeps the stage.`;
+  $("cap-pls").innerHTML = `light cycle <code>${((3000 - state.pls * 160) / 1000).toFixed(2)} s</code>`;
+  $("cap-pat").innerHTML = `light <code>${PATTERNS[state.pat & 3]}</code> = ability <code>${ABILITIES[state.pat & 3]}</code>`;
+  $("where").textContent = `Page ${(pageIndex() + 1).toLocaleString("en")} of ${PAGES.toLocaleString("en")}`;
+  drawGrid();
+  drawBig(0);
+  drawStages();
+  const g = genes();
+  $("name").textContent = nameOf(g);
+  $("kind").textContent = kindOf(g, state.stage);
+  const labels = ["HUE","ACC","PLS","PAT","HED","BOD","ATK","DEF","MUT"];
+  $("genome").innerHTML = labels.map((l, i) => i < 6
+    ? `<div class="gene"><b>${HEX[g[i]]}</b><span>${l}</span></div>`
+    : `<div class="gene free"><b>·</b><span>${l}</span></div>`).join("");
+  describe();
+}
+
+function pick(h, b) { state.head = h; state.body = b; render(); }
+function cellAt(ev) {
+  const r = grid.getBoundingClientRect(), s = r.width / 8;
+  const b = Math.floor((ev.clientX - r.left) / s), h = Math.floor((ev.clientY - r.top) / s);
+  return h >= 0 && h < 8 && b >= 0 && b < 8 ? [h, b] : null;
+}
+grid.addEventListener("click", ev => { const c = cellAt(ev); if (c) pick(c[0], c[1]); });
+grid.addEventListener("mousemove", ev => {
+  const c = cellAt(ev);
+  if (!c) { tip.hidden = true; return; }
+  const g = genes(c[0], c[1]);
+  tip.textContent = `${nameOf(g)} · ${kindOf(g, state.stage)}`;
+  tip.style.left = Math.min(ev.clientX + 12, window.innerWidth - 200) + "px";
+  tip.style.top = ev.clientY + 14 + "px";
+  tip.hidden = false;
+});
+grid.addEventListener("mouseleave", () => { tip.hidden = true; });
+grid.addEventListener("keydown", ev => {
+  const d = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] }[ev.key];
+  if (!d) return;
+  ev.preventDefault();
+  pick((state.head + d[0] + 8) % 8, (state.body + d[1] + 8) % 8);
+});
+
+$("prev").addEventListener("click", () => { setPage(pageIndex() - 1); render(); });
+$("next").addEventListener("click", () => { setPage(pageIndex() + 1); render(); });
+$("rand").addEventListener("click", () => {
+  setPage(Math.floor(Math.random() * PAGES));
+  state.head = Math.floor(Math.random() * 8); state.body = Math.floor(Math.random() * 8);
+  render();
+});
+
+function jump(text) {
+  const t = text.trim().toUpperCase();
+  let g = null;
+  if (/^[0-9A-F]{6}([0-9A-F]{3})?$/.test(t)) g = [...t.slice(0, 6)].map(c => HEX.indexOf(c));
+  else g = genesOfName(t);
+  if (!g) return false;
+  [state.hue, state.acc, state.pls, state.pat] = g;
+  state.head = g[4] & 7; state.body = g[5] & 7; state.var = (g[4] >> 3) | (g[5] >> 3) << 1;
+  render();
+  return true;
+}
+$("search").addEventListener("submit", ev => {
+  ev.preventDefault();
+  const ok = jump($("q").value);
+  const g = genes();
+  $("msg").textContent = ok
+    ? `Found: ${nameOf(g)}, ${kindOf(g, state.stage)}, page ${(pageIndex() + 1).toLocaleString("en")}.`
+    : "Not recognised. Type a name like SKYE-R7HR or 6 to 9 hex digits like A3020690A.";
+});
+
+if (location.hash.length > 1) jump(decodeURIComponent(location.hash.slice(1)));
+render();
+window.addEventListener("resize", drawGrid);
+
+let lastBob = -1;
+function tick(t) {
+  const [fast, glow, near, blink] = mood();
+  const frame = ledFrame(genes(), Math.floor(t), fast, glow, near, blink);
+  for (let i = 0; i < 8; i++) {
+    const c = frame[i];
+    leds[i].style.background = css(c);
+    leds[i].style.boxShadow = `0 0 ${Math.round((c[0] + c[1] + c[2]) / 60)}px ${css(c)}, 0 0 0 1px #262b35`;
+  }
+  const bob = reduced ? 0 : (Math.floor(t / 450) & 1) * 2;
+  if (bob !== lastBob) { lastBob = bob; drawBig(bob); }
+  requestAnimationFrame(tick);
+}
+if (reduced) tick(1200); else requestAnimationFrame(tick);
+</script>
+</body>
+</html>

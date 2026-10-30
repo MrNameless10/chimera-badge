@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec node --no-warnings "$(cd "$(dirname "$0")" && pwd)/run.mjs" "$@"

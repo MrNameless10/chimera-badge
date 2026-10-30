@@ -1,0 +1,14 @@
+{
+  "id": "chimera",
+  "name": "CHIMERA",
+  "version": "1.0.0",
+  "author": "MrNameless10",
+  "summary": "Raise a creature, splice DNA, battle nearby badges, fuse 3-6 into a colossus.",
+  "icon": "shuffle",
+  "accent": "9945FF",
+  "category": "games",
+  "permissions": [
+    "led",
+    "mesh"
+  ]
+}
